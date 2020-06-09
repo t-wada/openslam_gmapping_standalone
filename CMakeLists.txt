@@ -1,18 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(openslam_gmapping)
-
-## Find catkin macros and libraries
-find_package(catkin REQUIRED)
-
-###################################
-## catkin specific configuration ##
-###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES utils sensor_base sensor_odometry sensor_range log configfile scanmatcher gridfastslam
-)
+project(openslam_gmapping_standalone)
 
 ###########
 ## Build ##
@@ -153,14 +140,14 @@ target_link_libraries(gridfastslam
 
 ## Mark executables and/or libraries for installation
 install(TARGETS utils autoptr_test sensor_base sensor_odometry sensor_range sensor_range log log_test log_plot scanstudio2carmen rdk2carmen configfile configfile_test scanmatcher scanmatch_test icptest gridfastslam gfs2log gfs2rec gfs2neff
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ARCHIVE DESTINATION /usr/local/lib
+  LIBRARY DESTINATION /usr/local/lib
+  RUNTIME DESTINATION /usr/local/bin
 )
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/gmapping
-  DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
+  DESTINATION /usr/local/include
   FILES_MATCHING PATTERN "*.h*"
   PATTERN ".svn" EXCLUDE
 )
