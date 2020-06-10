@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.4.1)
 project(openslam_gmapping_standalone)
 
 ###########
@@ -124,6 +124,31 @@ target_link_libraries(gfs2neff gridfastslam)
 target_link_libraries(gridfastslam
   scanmatcher log sensor_range sensor_odometry sensor_base utils)
 
+
+add_library(gmapping
+  utils/stat.cpp
+  utils/movement.cpp
+  sensor/sensor_base/sensor.cpp
+  sensor/sensor_base/sensorreading.cpp
+  sensor/sensor_odometry/odometrysensor.cpp
+  sensor/sensor_odometry/odometryreading.cpp
+  sensor/sensor_range/rangesensor.cpp
+  sensor/sensor_range/rangereading.cpp
+  log/configuration.cpp
+  log/carmenconfiguration.cpp
+  log/sensorlog.cpp
+  log/sensorstream.cpp
+  configfile/configfile.cpp
+  scanmatcher/smmap.cpp
+  scanmatcher/scanmatcher.cpp
+  scanmatcher/scanmatcherprocessor.cpp
+  scanmatcher/eig3.cpp
+  gridfastslam/gridslamprocessor_tree.cpp
+  gridfastslam/motionmodel.cpp
+  gridfastslam/gridslamprocessor.cpp
+  gridfastslam/gfsreader.cpp)
+
+
 #############
 ## Install ##
 #############
@@ -139,18 +164,25 @@ target_link_libraries(gridfastslam
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS utils autoptr_test sensor_base sensor_odometry sensor_range sensor_range log log_test log_plot scanstudio2carmen rdk2carmen configfile configfile_test scanmatcher scanmatch_test icptest gridfastslam gfs2log gfs2rec gfs2neff
-  ARCHIVE DESTINATION /usr/local/lib
-  LIBRARY DESTINATION /usr/local/lib
-  RUNTIME DESTINATION /usr/local/bin
+install(TARGETS gmapping
+  EXPORT gmapping-export
+  ARCHIVE DESTINATION /usr/local/lib/gmapping
+  LIBRARY DESTINATION /usr/local/lib/gmapping
+  RUNTIME DESTINATION /usr/local/bin/gmapping
 )
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/gmapping
+  EXPORT gmapping-export
   DESTINATION /usr/local/include
   FILES_MATCHING PATTERN "*.h*"
   PATTERN ".svn" EXCLUDE
 )
+
+INSTALL(EXPORT gmapping-export
+    DESTINATION share/cmake/gmapping
+    FILE gmapping-config.cmake
+    EXPORT_LINK_INTERFACE_LIBRARIES)
 
 #############
 ## Testing ##
